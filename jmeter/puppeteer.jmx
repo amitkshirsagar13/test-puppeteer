@@ -132,6 +132,8 @@ try {
 	var webAppCookie= WDS.browser.manage().getCookieNamed(&apos;webapp&apos;).getValue();
 	props.put(&quot;webAppCookie&quot;,webAppCookie);
 	props.put(&quot;webAppStateCookie&quot;,webAppStateCookie);
+	WDS.log.info(&quot;webAppCookie: &quot;, webAppCookie);
+	WDS.log.info(&quot;webAppStateCookie: &quot;, webAppStateCookie);
 
 	wait.until(conditions.presenceOfElementLocated(pkg.By.className(&apos;sw-avatar-normalIcon&apos;)));
 	snapshot();
