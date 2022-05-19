@@ -77,19 +77,15 @@ WDS.sampleResult.sampleStart();
 WDS.browser.get(url);
 var counter = 0;
 var basePath = WDS.args[0];
-function snapshotPath(){
-	counter++;
-	var snapshotUrl = basePath+ &apos;/snapshots/msc-snapshot&apos;+ counter+&apos;.png&apos;;
-	WDS.log.info(&quot;Snapshot Captured: &quot; + snapshotUrl);
-	return snapshotUrl;
-}
 function snapshot() {
-	WDS.browser.getScreenshotAs(pkg.OutputType.FILE).renameTo(new java.io.File(snapshotPath()));
+	counter++;
+	var snapshotUrl = basePath+ &apos;/snapshots/github-snapshot&apos;+ counter+&apos;.png&apos;;
+	WDS.log.info(&quot;Snapshot Captured: &quot; + snapshotUrl);
+	WDS.browser.getScreenshotAs(pkg.OutputType.FILE).renameTo(new java.io.File(snapshotUrl));
 }
 
-
-java.lang.Thread.sleep(5000);
 wait.until(conditions.presenceOfElementLocated(pkg.By.className(&apos;avatar-user&apos;)));
+java.lang.Thread.sleep(1000);
 snapshot();
 org.apache.commons.io.FileUtils.writeStringToFile(new java.io.File('github.html'), WDS.browser.getPageSource())
 java.lang.Thread.sleep(5000);
