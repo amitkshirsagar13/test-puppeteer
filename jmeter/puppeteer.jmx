@@ -66,7 +66,7 @@
 var select = JavaImporter(org.openqa.selenium.support.ui.Select);
 var support_ui = JavaImporter(org.openqa.selenium.support.ui.WebDriverWait);
 var conditions = org.openqa.selenium.support.ui.ExpectedConditions;
-var wait = new support_ui.WebDriverWait(WDS.browser, 120);
+var wait = new support_ui.WebDriverWait(WDS.browser, 300);
 var vars = org.apache.jmeter.threads.JMeterContextService.getContext().getVariables();
 var props = org.apache.jmeter.threads.JMeterContextService.getContext().getProperties();
 
@@ -77,6 +77,8 @@ WDS.sampleResult.sampleStart();
 WDS.browser.get(url);
 var counter = 0;
 var basePath = WDS.args[0];
+
+
 function snapshot() {
 	counter++;
 	var snapshotUrl = basePath+ &apos;/snapshots/msc-snapshot&apos;+ counter+&apos;.png&apos;;
@@ -84,55 +86,60 @@ function snapshot() {
 	WDS.browser.getScreenshotAs(pkg.OutputType.FILE).renameTo(new java.io.File(snapshotUrl));
 }
 
-
-java.lang.Thread.sleep(60000);
-try{
-var login =  WDS.browser.findElement(pkg.By.className(&apos;sign-in-button&apos;));
-wait.until(conditions.presenceOfElementLocated(pkg.By.className(&apos;sign-in-button&apos;)));
-
-snapshot();
-login.click();
-
-
-wait.until(conditions.presenceOfElementLocated(pkg.By.id(&apos;username&apos;)));
-
-var email = WDS.browser.findElement(pkg.By.id(&apos;username&apos;));
-while(email.isDisplayed() == false){ } // ensure email component apear
-email.sendKeys(&apos;dmstestuser123@gmail.com&apos;)
-
-var password = WDS.browser.findElement(pkg.By.id(&apos;password&apos;))
-
-while(password.isDisplayed() == false){} // ensure password component apear
-password.sendKeys(&apos;Test_123&apos;)
-snapshot();
-var submit =  WDS.browser.findElement(pkg.By.className(&apos;btn-yellow&apos;))
-submit.click();
-
+try {
+	var login =  WDS.browser.findElement(pkg.By.className(&apos;sign-in-button&apos;));
+	wait.until(conditions.presenceOfElementLocated(pkg.By.className(&apos;sign-in-button&apos;)));
+	
+	snapshot();
+	login.click();
+	
+	
+	wait.until(conditions.presenceOfElementLocated(pkg.By.id(&apos;username&apos;)));
+	
+	var email = WDS.browser.findElement(pkg.By.id(&apos;username&apos;));
+	while(email.isDisplayed() == false){ } // ensure email component apear
+	email.sendKeys(&apos;dmstestuser123@gmail.com&apos;)
+	
+	var password = WDS.browser.findElement(pkg.By.id(&apos;password&apos;))
+	
+	while(password.isDisplayed() == false){} // ensure password component apear
+	password.sendKeys(&apos;Test_123&apos;)
+	snapshot();
+	var submit =  WDS.browser.findElement(pkg.By.className(&apos;btn-yellow&apos;))
+	submit.click();
+	
 	wait.until(conditions.presenceOfElementLocated(pkg.By.className(&apos;continue-button&apos;)));
 	var form =  WDS.browser.findElement(pkg.By.id(&apos;frmAccounts&apos;))
 	var selectAccounts = new org.openqa.selenium.support.ui.Select(WDS.browser.findElement(pkg.By.id(&apos;accounts&apos;)));
-	WDS.log.info(&quot;element not found&quot; + &apos;8c536adf83b7498498055888289865a1&apos;)
 	selectAccounts.selectByValue(&apos;8c536adf83b7498498055888289865a1&apos;);	
 	var submit =  WDS.browser.findElement(pkg.By.id(&apos;continue&apos;))
 	submit.click();
-	var allow = WDS.browser.findElement(pkg.By.id(&apos;allow&apos;));
-	while(allow.isDisplayed() == true){ 
-		allow.click();
+	try {
+		wait.until(conditions.presenceOfElementLocated(pkg.By.id(&apos;allow&apos;)));
+		var allow = WDS.browser.findElement(pkg.By.id(&apos;allow&apos;));
+		while(allow.isDisplayed() == true){ 
+			allow.click();
+		}
+	}catch(ex) {
+		WDS.log.info(&quot;xx element not found: &quot; + ex);
 	}
-wait.until(conditions.presenceOfElementLocated(pkg.By.className(&apos;page__heading&apos;)));
+	wait.until(conditions.presenceOfElementLocated(pkg.By.className(&apos;page__heading&apos;)));
+	
+	WDS.log.info(&quot;page__heading loaded&quot;);
+	var webAppStateCookie= WDS.browser.manage().getCookieNamed(&apos;web-app-state&apos;).getValue();
+	var webAppCookie= WDS.browser.manage().getCookieNamed(&apos;webapp&apos;).getValue();
+	props.put(&quot;webAppCookie&quot;,webAppCookie);
+	props.put(&quot;webAppStateCookie&quot;,webAppStateCookie);
 
-var webAppStateCookie= WDS.browser.manage().getCookieNamed(&apos;web-app-state&apos;).getValue();
-var webAppCookie= WDS.browser.manage().getCookieNamed(&apos;webapp&apos;).getValue();
-props.put(&quot;webAppCookie&quot;,webAppCookie);
-props.put(&quot;webAppStateCookie&quot;,webAppStateCookie);
-java.lang.Thread.sleep(5000);
-snapshot();
-java.lang.Thread.sleep(1000);
-org.apache.commons.io.FileUtils.writeStringToFile(new java.io.File('msc.html'), WDS.browser.getPageSource())
+	wait.until(conditions.presenceOfElementLocated(pkg.By.className(&apos;sw-avatar-normalIcon&apos;)));
+	snapshot();
+	WDS.log.info(&quot;sw-avatar-normalIcon loaded&quot;);
+	java.lang.Thread.sleep(1000);
+	org.apache.commons.io.FileUtils.writeStringToFile(new java.io.File(&apos;msc.html&apos;), WDS.browser.getPageSource())
 
 }catch(exc){
-    WDS.log.info(&quot;element not found&quot; + exc);
-    org.apache.commons.io.FileUtils.writeStringToFile(new java.io.File('msc.html'), WDS.browser.getPageSource())
+    WDS.log.info(&quot;element not found: &quot; + exc);
+    org.apache.commons.io.FileUtils.writeStringToFile(new java.io.File(&apos;msc.html&apos;), WDS.browser.getPageSource())
     snapshot();
 }
 
