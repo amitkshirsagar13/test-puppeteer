@@ -81,9 +81,11 @@ var basePath = WDS.args[0];
 
 function snapshot() {
 	counter++;
-	var snapshotUrl = basePath+ &apos;/snapshots/msc-snapshot&apos;+ counter+&apos;.png&apos;;
+	var snapshotUrl = basePath+ &apos;/snapshots/msc-snapshot-&apos;+ counter+&apos;.png&apos;;
+	var snap = WDS.browser.getScreenshotAs(pkg.OutputType.FILE);
+	WDS.log.info(&quot;Snapshot: &quot; + snap);
 	WDS.log.info(&quot;Snapshot Captured: &quot; + snapshotUrl);
-	WDS.browser.getScreenshotAs(pkg.OutputType.FILE).renameTo(new java.io.File(snapshotUrl));
+	snap.renameTo(new java.io.File(snapshotUrl));
 }
 
 try {

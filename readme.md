@@ -13,7 +13,7 @@ docker run -d -p 5601:8080 --rm --name puppeteer-jmeter -v //c/opt/jmeter/chrome
 ## Run Jmeter Test
 
 ```
-/opt/apache-jmeter-5.4.3/bin/jmeter -n -t "/app/puppeteer/jmeter/puppeteer.jmx" -Jchrome.driver.path="/opt/chromedrivers/ln/101/chromedriver" -Jbase.path="/tmp/jmeter" -l "/tmp/jmeter/reports/result.jtl" -e -o "/tmp/jmeter/reports"
+/opt/apache-jmeter-5.4.3/bin/jmeter -n -t "/tmp/jmeter/puppeteer.jmx" -Jchrome.driver.path="/opt/chromedrivers/ln/101/chromedriver" -Jbase.path="/tmp/jmeter" -l "/tmp/jmeter/reports/result.jtl" -e -o "/tmp/jmeter/reports"
 
 
 /opt/apache-jmeter-5.4.3/bin/jmeter -n -t "/app/puppeteer/jmeter/github.jmx" -Jchrome.driver.path="/opt/chromedrivers/ln/101/chromedriver" -Jbase.path="/tmp/jmeter" -l "/tmp/jmeter/reports/result.jtl" -e -o "/tmp/jmeter/reports"
