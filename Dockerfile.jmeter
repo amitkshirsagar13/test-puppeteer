@@ -1,0 +1,19 @@
+FROM node:16.14.2-slim AS jmeter
+RUN apt-get update && apt-get install gnupg2 wget unzip curl openjdk-11-jdk -y
+WORKDIR /tmp
+RUN wget https://downloads.apache.org/jmeter/binaries/apache-jmeter-5.4.3.zip
+RUN unzip apache-jmeter-5.4.3.zip
+RUN wget https://jmeter-plugins.org/files/packages/jpgc-webdriver-3.3.zip
+RUN unzip jpgc-webdriver-3.3.zip
+RUN cp -rf lib apache-jmeter-5.4.3/
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \ 
+    && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
+RUN apt-get update && apt-get -y install google-chrome-stable
+RUN mv apache-jmeter-5.4.3 /opt
+COPY jmeter/chromedrivers /opt/chromedrivers
+RUN mkdir -p /tmp/jmeter/snapshots
+WORKDIR /app/puppeteer
+COPY . .
+RUN npm i
+EXPOSE 8080
+CMD [ "node", "server.js" ]

@@ -1,0 +1,18 @@
+{
+  "name": "test-puppeteer",
+  "version": "1.0.0",
+  "author": "Eirik Sletteberg",
+  "license": "(Beerware OR Unlicense OR WTFPL)",
+  "scripts": {
+    "clean": "rm -rf build",
+    "prepare": "mkdir -p build",
+    "build-artifact": "echo OK > build/result.txt",
+    "build": "yarn && yarn run clean && yarn run prepare && yarn run build-artifact",
+    "start": "node server.js",
+    "puppeteer": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.1",
+    "puppeteer": "^14.1.0"
+  }
+}
