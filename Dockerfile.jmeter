@@ -1,5 +1,5 @@
 FROM node:16.14.2-slim AS jmeter
-RUN apt-get update && apt-get install gnupg2 wget unzip curl openjdk-11-jdk xvfb xorg openbox -y
+RUN apt-get update && apt-get install gnupg2 wget unzip curl openjdk-11-jdk xvfb xorg openbox libexif-gtk-dev -y
 WORKDIR /tmp
 RUN wget https://downloads.apache.org/jmeter/binaries/apache-jmeter-5.4.3.zip
 RUN unzip apache-jmeter-5.4.3.zip
