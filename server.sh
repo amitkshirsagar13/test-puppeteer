@@ -1,4 +1,4 @@
 #!/bin/sh
-Xvfb :20 >/dev/null 2>&1 &
+Xvfb :99 -screen 0 1920x1080x16 &> xvfb.log &
 export DISPLAY=:20
 node server.js
